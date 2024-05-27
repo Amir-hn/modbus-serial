@@ -9,11 +9,20 @@ ModbusSerial::ModbusSerial(Stream & port, byte slaveId, int txenPin) :
 m_stream(&port), m_txenPin(txenPin), m_slaveId(slaveId)
 {}
 
+void ModbusSerial::setLedPin(uint8_t pin) {
+  ledPin = pin;
+}
+
 void ModbusSerial::config (unsigned long baud) {
 
   if (m_txenPin >= 0) {
     
     pinMode (m_txenPin, OUTPUT);
+    digitalWrite (m_txenPin, LOW);
+  }
+
+  if(ledPin > 0) {
+    pinMode (ledPin, OUTPUT);
     digitalWrite (m_txenPin, LOW);
   }
 
@@ -34,6 +43,12 @@ void ModbusSerial::task() {
     
     _len = m_stream->available();
     delayMicroseconds (m_t15);
+  }
+
+  if(ledPin>0) {
+    digitalWrite(ledPin,HIGH);
+    delay(100);
+    digitalWrite(ledPin,LOW);
   }
 
   if (_len == 0) {

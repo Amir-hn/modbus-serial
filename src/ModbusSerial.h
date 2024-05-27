@@ -91,6 +91,8 @@ class ModbusSerial : public Modbus {
      * @brief Broadcast address
      */
     static const byte BroadcastAddress = 0;
+
+    void setLedPin(uint8_t);
     
   protected:
     bool receive (byte * frame);
@@ -105,6 +107,8 @@ class ModbusSerial : public Modbus {
 
     unsigned int m_t15; // inter character time out (us)
     unsigned int m_t35; // frame delay  (us)
+
+    uint8_t ledPin=-10;
 
   private:
     word calcCrc (byte address, byte * pduframe, byte pdulen);
