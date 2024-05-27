@@ -21,9 +21,9 @@ void ModbusSerial::config (unsigned long baud) {
     digitalWrite (m_txenPin, LOW);
   }
 
-  if(ledPin > 0) {
-    pinMode (ledPin, OUTPUT);
-    digitalWrite (m_txenPin, LOW);
+  if(this->ledPin > 0) {
+    pinMode (this->ledPin, OUTPUT);
+    digitalWrite (this->ledPin, LOW);
   }
 
   if (baud > 19200) {
@@ -45,16 +45,14 @@ void ModbusSerial::task() {
     delayMicroseconds (m_t15);
   }
 
-  if(ledPin>0) {
-    digitalWrite(ledPin,HIGH);
-    delay(100);
-    digitalWrite(ledPin,LOW);
-  }
+  
 
   if (_len == 0) {
     
     return;
   }
+
+  
 
   byte i;
   _frame = (byte*) malloc (_len);
@@ -78,6 +76,11 @@ void ModbusSerial::task() {
 
   free (_frame);
   _len = 0;
+  if(this->ledPin>0) {
+    digitalWrite(this->ledPin,HIGH);
+    delay(200);
+    digitalWrite(this->ledPin,LOW);
+  }
 }
 
 void ModbusSerial::setSlaveId (byte slaveId) {
